@@ -58,7 +58,11 @@ defmodule TypeToWin.Scene.Game do
   end
 
   def handle_input({:key, {user_input, :press, _}}, _context, state) do
-    {:noreply, print_typer_word(state, user_input)}
+    if Regex.match?(~r/[a-zA-Z]/, user_input) && String.length(user_input) == 1 do
+      {:noreply, print_typer_word(state, user_input)}
+    else
+      {:noreply, state}
+    end
   end
 
   def handle_input(_input, _context, state), do: {:noreply, state}
