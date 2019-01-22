@@ -28,6 +28,7 @@ defmodule TypeToWin.Scene.Game do
       frame_count: 1,
       frame_timer: timer,
       levels: 1..195,
+      question: "What's the capital of the next county:",
       countries: Countries.all,
       center: center,
       user_answer: ""
@@ -36,8 +37,9 @@ defmodule TypeToWin.Scene.Game do
     state.graph
     |> draw_score(state.score)
     |> draw_level(state.current_level)
+    |> draw_question(state.question)
     |> draw_coming_countries(state.countries, state.current_level)
-    |> draw_answer(state.countries, state.current_level)
+    |> draw_answer(state.countries, state.current_level, state.user_answer)
     |> draw_user_answer(state.user_answer)
     |> push_graph()
 
@@ -49,8 +51,9 @@ defmodule TypeToWin.Scene.Game do
     state.graph
     |> draw_score(state.score)
     |> draw_level(state.current_level)
+    |> draw_question(state.question)
     |> draw_coming_countries(state.countries, state.current_level)
-    |> draw_answer(state.countries, state.current_level)
+    |> draw_answer(state.countries, state.current_level, state.user_answer)
     |> draw_user_answer(state.user_answer)
     |> push_graph()
 
@@ -58,7 +61,7 @@ defmodule TypeToWin.Scene.Game do
   end
 
   def handle_input({:key, {user_input, :press, _}}, _context, state) do
-    if Regex.match?(~r/[a-zA-Z]/, user_input) && String.length(user_input) == 1 do
+    if Regex.match?(~r/^[a-zA-Z]{1}\z/, user_input) do
       {:noreply, print_typer_word(state, user_input)}
     else
       {:noreply, state}
@@ -70,6 +73,11 @@ defmodule TypeToWin.Scene.Game do
   defp draw_score(graph, score) do
     graph
     |> text("Score: #{score}", fill: :white, translate: {@tile_size, @tile_size})
+  end
+
+  defp draw_question(graph, question) do
+    graph
+    |> text(question, fill: :white, translate: {100,200})
   end
 
   defp go_to_next_level(state) do
@@ -96,10 +104,10 @@ defmodule TypeToWin.Scene.Game do
     put_in(state, [:user_answer], "")
   end
 
-  defp draw_answer(graph, countries, current_level) do
+  defp draw_answer(graph, countries, current_level, user_answer) do
     {_country, capital} =  Enum.at(countries.all, current_level)
     graph
-    |> text(String.replace(capital, ~r/[^\s]/, "_"), fill: :white, translate: {300, 380})
+    |> text(String.replace(capital, ~r/[^\s#{user_answer}]/i, "_"), fill: :white, translate: {300, 380})
   end
 
   defp draw_coming_countries(graph, countries, current_level) do
