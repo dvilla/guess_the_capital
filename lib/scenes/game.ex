@@ -69,7 +69,7 @@ defmodule TypeToWin.Scene.Game do
   end
 
   defp go_to_next_level(state) do
-    {country, capital} = current_country(state.countries, state.current_level)
+    {_, capital} =  Enum.at(state.countries.all, state.current_level)
     if String.capitalize(capital) == String.capitalize(state.user_answer) do
       update_in(state, [:current_level], &(&1 + 1))
       |> update_score
@@ -93,16 +93,16 @@ defmodule TypeToWin.Scene.Game do
   end
 
   defp draw_answer(graph, countries, current_level) do
-    {country, capital} = current_country(countries, current_level)
+    {_country, capital} =  Enum.at(countries.all, current_level)
     graph
-    |> text(capital, fill: :white, translate: {300, 380})
+    |> text(String.replace(capital, ~r/[^\s]/, "_"), fill: :white, translate: {300, 380})
   end
 
   defp draw_coming_countries(graph, countries, current_level) do
     {country, _} = Enum.at(countries.all, current_level)
     country = Atom.to_string(country)
     graph
-    |> text(country, fill: :white, translate: {300, 300})
+    |> text(String.replace(country,"_", " "), fill: :white, translate: {300, 300})
   end
 
   defp draw_user_answer(graph, answer) do
@@ -113,9 +113,4 @@ defmodule TypeToWin.Scene.Game do
   defp print_typer_word(state, user_input) do
     update_in(state, [:user_answer], &(&1 <> String.downcase(user_input)))
   end
-
-  defp current_country(countries, current_level) do
-    {current_country, capital} = Enum.at(countries.all, current_level)
-  end
-
 end
