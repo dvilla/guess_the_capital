@@ -3,15 +3,15 @@
 use Mix.Config
 
 # Configure the main viewport for the Scenic application
-config :type_to_win, :viewport, %{
+config :guess_the_capital, :viewport, %{
   name: :main_viewport,
   size: {700, 600},
-  default_scene: {TypeToWin.Scene.Game, nil},
+  default_scene: {GuessTheCapital.Scene.Game, nil},
   drivers: [
     %{
       module: Scenic.Driver.Glfw,
       name: :glfw,
-      opts: [resizeable: false, title: "type_to_win"]
+      opts: [resizeable: false, title: "guess_the_capital"]
     }
   ]
 }

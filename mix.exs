@@ -1,9 +1,9 @@
-defmodule TypeToWin.MixProject do
+defmodule GuessTheCapital.MixProject do
   use Mix.Project
 
   def project do
     [
-      app: :type_to_win,
+      app: :guess_the_capital,
       version: "0.1.0",
       elixir: "~> 1.7",
       build_embedded: true,
@@ -15,7 +15,7 @@ defmodule TypeToWin.MixProject do
   # Run "mix help compile.app" to learn about applications.
   def application do
     [
-      mod: {TypeToWin, []},
+      mod: {GuessTheCapital, []},
       extra_applications: []
     ]
   end

@@ -1,4 +1,4 @@
-defmodule TypeToWin.Scene.Home do
+defmodule GuessTheCapital.Scene.Home do
   use Scenic.Scene
 
   alias Scenic.Graph

@@ -1,9 +1,8 @@
-defmodule TypeToWin.Scene.Game do
+defmodule GuessTheCapital.Scene.Game do
   use Scenic.Scene
   alias Scenic.Graph
   alias Scenic.ViewPort
   import Scenic.Primitives, only: [text: 3]
-  import Countries
 
   @graph Graph.build(font: :roboto, font_size: 36)
   @tile_size 32
@@ -82,7 +81,8 @@ defmodule TypeToWin.Scene.Game do
 
   defp go_to_next_level(state) do
     {_, capital} =  Enum.at(state.countries.all, state.current_level)
-    if String.capitalize(capital) == String.capitalize(state.user_answer) do
+    all_letters_are_guessed? = String.downcase(capital) |> String.replace(~r/[\s#{state.user_answer}]/i, "") == ""
+    if all_letters_are_guessed? do
       update_in(state, [:current_level], &(&1 + 1))
       |> update_score
       |> clean_user_answer

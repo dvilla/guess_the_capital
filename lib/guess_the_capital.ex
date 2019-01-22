@@ -1,4 +1,4 @@
-defmodule TypeToWin do
+defmodule GuessTheCapital do
   @moduledoc """
   Starter application using the Scenic framework.
   """
@@ -7,7 +7,7 @@ defmodule TypeToWin do
     import Supervisor.Spec, warn: false
 
     # load the viewport configuration from config
-    main_viewport_config = Application.get_env(:type_to_win, :viewport)
+    main_viewport_config = Application.get_env(:guess_the_capital, :viewport)
 
     # start the application with the viewport
     children = [
